@@ -2,64 +2,91 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <title>My First Web Component</title>
+
+    <style media="screen">
+      h1 {
+          color: red;
+      }
+    </style>
+
     <script type="module">
         import './img-inline-svg.js';
         import './popup-info.js';
     </script>
+
     <script>
-      const greenClick = () => {
-        console.log('green');
-        document.querySelector('#account').style.color='green';
+      const greenClick = () => {     
+        document.querySelector('#account').style.color='green';   
         // [...document.querySelectorAll('img-inline-svg')].map(x=>x.style.color='green');
       }
       const defaultClick = () => {
-        console.log('default');
         [...document.querySelectorAll('img-inline-svg')].map(x=>x.style.color='');
       }
       const brownClick = () => {
-        console.log('brown');
         [...document.querySelectorAll('img-inline-svg')].map(x=>x.style.color='brown');
-      }
-
-      const removeElement = () => {
-        if(document.querySelector('#account')) {
-          document.querySelector('#img-inline-svg-div').removeChild(document.querySelector('#account'));
-        }
-      }
-
-      const appendElement = () => {
-        if(!document.querySelector('#account')) {
-          var myEl = document.createElement('span');
-          myEl.innerHTML = `<img-inline-svg id="account" src="account_circle-24px.svg" style="color: purple"></img-inline-svg>`;
-          document.querySelector('#img-inline-svg-div').insertBefore(myEl.firstChild, document.querySelector('#img-inline-svg-div').firstChild);
-        }
-      }
+      }     
     </script>
-    <title>My First Web Component</title>
+    
     <style>
         img-inline-svg {
             width: 48px !important;
             height: 48px !important;
         }
     </style>
+
   </head>
   <body style="background-color: lightgray;">
+    <div style="text-align:center">
+      <h2>
+        Three web components!
+      </h2>
+    </div>
+
+    <div>
+      <p><i>Web component 1</i></p>
+      <h1>Document header</h1>
+        <my-web-component></my-web-component>
+        <template id="my-web-component">
+            <style media="screen">
+                h1 {
+                    color: teal;
+                }
+            </style>
+            <h1>Component header</h1>
+        </template>
+        <script>
+            class MyWebComponent extends HTMLElement {
+                constructor() {
+                    super();
+
+                    let shadowDom = this.attachShadow({mode: 'open'})
+                    let template = document.getElementById('my-web-component');
+                    let templateHtml = template.content.cloneNode(true);
+                    shadowDom.appendChild(templateHtml)
+                }
+            }
+
+            customElements.define('my-web-component', MyWebComponent)
+        </script>
+    </div>
+    <br/>
     <div id="img-inline-svg-div">
+      <p><i>Web component 2</i></p>
       <img-inline-svg id="account" src="account_circle-24px.svg" style="color: purple"></img-inline-svg>
       <img-inline-svg id="swap" src="swap_horizontal_circle-24px.svg" style="color: royalblue"></img-inline-svg>      
       <button onclick="greenClick()">Green</button>
       <button onclick="defaultClick()">Default</button>
-      <button onclick="brownClick()">Brown</button>
-      <button onclick="removeElement()">Remove element</button>
-      <button onclick="appendElement()">Append element</button>
+      <button onclick="brownClick()">Brown</button>      
     </div>
     <br/>
     <br/>
     <br/>
     <br/>
     <div id="popup-info-div">
+      <p><i>Web component 3</i></p>
       <label for="cvc">Enter your CVC <popup-info img="alt.png" data-text="Your card validation code (CVC) is an extra security feature — it is the last 3 or 4 numbers on the back of your card."></popup-info></label>
       <input type="text" id="cvc">
-    </div>
+    </div>    
   </body>
 </html>

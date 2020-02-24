@@ -1,9 +1,9 @@
 {
     "scripts": {
-        "compile": "tsc",
-        "build": "tsc && npm run copy-html && npm run copy-assets ",
+        "compile": "tsc",        
         "copy-html": "copy .\\src\\app\\index.html .\\build",
-        "copy-assets": "copy .\\assets\\* .\\build"
+        "copy-assets": "copy .\\assets\\* .\\build",
+        "build": "tsc && npm run copy-html && npm run copy-assets "
     },
     "devDependencies": {
         "typescript": "^3.7.3"
